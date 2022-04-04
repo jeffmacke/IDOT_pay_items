@@ -20,8 +20,8 @@ idot_data = load_stream_github_csv(data_url)
 
 st.sidebar.header('Select Pay Item')
 selected_item = st.sidebar.selectbox('Item', list(idot_data['PayItemNumber'].unique()))  
-selected_low_qty = st.sidebar.slider('From quantity',0,50000,0)
-selected_high_qty = st.sidebar.slider('to quantity',1,50000,50000)
+selected_low_qty = int(st.sidebar.text_input('From quantity',0))
+selected_high_qty = int(st.sidebar.text_input('to quantity',50000))
 
 st.markdown("""
 This app performs simple analysis of IDOT bid tabulation data!
