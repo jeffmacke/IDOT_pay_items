@@ -19,7 +19,7 @@ def load_stream_github_csv (url):
 idot_data = load_stream_github_csv(data_url)
 
 st.sidebar.header('Select Pay Item')
-selected_item = st.sidebar.selectbox('Item', list(idot_data['PayItemNumber'].unique()))  
+selected_item = st.sidebar.text_input('Item', 'A2C010G5')  
 selected_low_qty = int(st.sidebar.text_input('From quantity',0))
 selected_high_qty = int(st.sidebar.text_input('to quantity',50000))
 
