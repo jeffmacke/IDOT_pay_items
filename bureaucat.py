@@ -7,6 +7,7 @@ import seaborn as sns
 st.title('Bureau Cats')
 
 data_url = 'https://raw.githubusercontent.com/jeffmacke/IDOT_pay_items/main/IDOTpayitems.csv'
+list_url = 'https://raw.githubusercontent.com/jeffmacke/IDOT_pay_items/main/20200117HWYCodedPayItems.csv'
 
 @st.cache
 def load_stream_github_csv (url):
@@ -18,8 +19,17 @@ def load_stream_github_csv (url):
     return df
 idot_data = load_stream_github_csv(data_url)
 
+@st.cache
+def load_items_github_csv (url):
+    df = pd.read_csv(url,index_col=0,dtype='str')
+    return df
+idot_payitems = load_items_github_csv(list_url)
+
+#selected_item = st.sidebar.text_imput('Item', list(idot_data['PayItemNumber'].unique()))  
+
 st.sidebar.header('Select Pay Item')
-selected_item = st.sidebar.text_input('Item', 'A2C010G5')  
+search = st.sidebar.text_input('Search','SEW')
+selected_item = st.sidebar.text_input('Item','A2C010G5')  
 selected_low_qty = int(st.sidebar.text_input('From quantity',0))
 selected_high_qty = int(st.sidebar.text_input('to quantity',50000))
 
@@ -28,6 +38,11 @@ This app performs simple analysis of IDOT bid tabulation data!
 * **Python libraries:** seaborn, pandas, streamlit
 * **Data source:** [idot.illinois.com](https://idot.illinois.gov/).
 """)
+
+
+st.subheader("Search Results")
+search_result = idot_payitems[idot_payitems['CODED PAY ITEMS FOR THE Jan 17, 2020 LETTING DESCRIPTION'].str.contains(search,na=False)]
+search_result
 
 st.subheader("Bid Items 2017 to 2021 based on Selection")
 
