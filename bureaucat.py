@@ -21,14 +21,15 @@ idot_data = load_stream_github_csv(data_url)
 
 @st.cache
 def load_items_github_csv (url):
-    df = pd.read_csv(url,index_col=0,dtype='str')
+    df = pd.read_csv(url,dtype='str',names=['Pay Item','Name','Unit','Abbreviation','Special'])
     return df
 idot_payitems = load_items_github_csv(list_url)
 
 #selected_item = st.sidebar.text_imput('Item', list(idot_data['PayItemNumber'].unique()))  
 
 st.sidebar.header('Select Pay Item')
-search = st.sidebar.text_input('Search','SEW')
+search = st.sidebar.text_input('Search Phrase','SEW')
+subsearch = st.sidebar.text_input('Second Search Phase','12')
 selected_item = st.sidebar.text_input('Item','A2C010G5')  
 selected_low_qty = int(st.sidebar.text_input('From quantity',0))
 selected_high_qty = int(st.sidebar.text_input('to quantity',50000))
@@ -41,8 +42,9 @@ This app performs simple analysis of IDOT bid tabulation data!
 
 
 st.subheader("Search Results")
-search_result = idot_payitems[idot_payitems['CODED PAY ITEMS FOR THE Jan 17, 2020 LETTING DESCRIPTION'].str.contains(search,na=False)]
-search_result
+search_result = idot_payitems[idot_payitems['Name'].str.contains(search, case= False, na=False)]
+subsearch_result = search_result[search_result['Name'].str.contains(subsearch, case =False, na=False)]
+subsearch_result
 
 st.subheader("Bid Items 2017 to 2021 based on Selection")
 
